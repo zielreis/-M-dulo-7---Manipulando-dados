@@ -1,0 +1,25 @@
+<input id="txt" placeholder="Tarefa">
+<button onclick="add()">Adicionar</button>
+<div id="lista"></div>
+
+<script>
+    function render() {
+        let t = JSON.parse(localStorage.t || "[]");
+        document.getElementById("lista").innerHTML = t.map((item, i) => `
+            <div>
+                <input type="checkbox" ${item.ok ? "checked" : ""} onchange="t[${i}].ok=!t[${i}].ok; localStorage.t=JSON.stringify(t); render()">
+                <span style="${item.ok ? 'text-decoration:line-through' : ''}">${item.txt}</span>
+                <button onclick="t.splice(${i},1); localStorage.t=JSON.stringify(t); render()">X</button>
+            </div>
+        `).join("");
+    }
+
+    function add() {
+        let t = JSON.parse(localStorage.t || "[]");
+        t.push({txt: document.getElementById("txt").value, ok: false});
+        localStorage.t = JSON.stringify(t);
+        render();
+    }
+
+    render();
+</script>
