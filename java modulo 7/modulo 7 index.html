@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema de Curtidas</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 20px;
+      }
+      #resultado {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="nomeInput" placeholder="Digite seu nome" />
+    <button onclick="curtir()">Curtir</button>
+
+    <p id="resultado">Ninguém curtiu</p>
+
+    <script>
+      const listaCurtidas = [];
+
+      function curtir() {
+        const input = document.getElementById("nomeInput");
+        const nome = input.value.trim();
+        const display = document.getElementById("resultado");
+
+        if (nome === "") return; // Ignora se estiver vazio
+
+        // Verifica se o nome já existe (case-insensitive)
+        if (
+          !listaCurtidas.some((n) => n.toLowerCase() === nome.toLowerCase())
+        ) {
+          listaCurtidas.push(nome);
+        }
+
+        input.value = ""; // Limpa o campo
+        input.focus();
+
+        // Lógica de exibição baseada no tamanho do array
+        const len = listaCurtidas.length;
+
+        if (len === 0) {
+          display.innerText = "Ninguém curtiu";
+        } else if (len === 1) {
+          display.innerText = `${listaCurtidas[0]} curtiu`;
+        } else if (len === 2) {
+          display.innerText = `${listaCurtidas[0]} e ${listaCurtidas[1]} curtiram`;
+        } else {
+          const resto = len - 2;
+          display.innerText = `${listaCurtidas[0]}, ${listaCurtidas[1]} e mais ${resto} pessoas curtiram`;
+        }
+      }
+    </script>
+  </body>
+</html>
