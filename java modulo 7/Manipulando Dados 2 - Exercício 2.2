@@ -1,0 +1,30 @@
+<div style="position:fixed; top:0; background:#fff; padding:10px; width:100%">
+    <textarea id="txt" placeholder="O que está acontecendo?"></textarea>
+    <button onclick="postar()">Postar</button>
+</div>
+
+<div id="feed" style="margin-top:80px"></div>
+
+<script>
+    let posts = [];
+
+    async function postar() {
+        const t = document.getElementById("txt").value;
+        const res = await fetch("https://api.thecatapi.com/v1/images/search");
+        const img = (await res.json())[0].url;
+        
+        posts.unshift({ t, img, likes: 0 });
+        document.getElementById("txt").value = "";
+        render();
+    }
+
+    function render() {
+        document.getElementById("feed").innerHTML = posts.map((p, i) => `
+            <div style="border-bottom:1px solid #ccc; padding:10px">
+                <p>${p.t}</p>
+                <img src="${p.img}" width="200"><br>
+                <button onclick="posts[${i}].likes++; render()">Curtir (${p.likes})</button>
+            </div>
+        `).join("");
+    }
+</script>
